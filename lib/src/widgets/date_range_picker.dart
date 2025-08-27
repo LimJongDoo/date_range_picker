@@ -23,10 +23,10 @@ const CalendarTheme kTheme = CalendarTheme(
 /// * [theme] - The theme to apply to the day tile.
 /// * [onTap] - A callback function to be called when the day tile is tapped.
 Widget kDayTileBuilder(
-  DayModel dayModel,
-  CalendarTheme theme,
-  ValueChanged<DateTime> onTap,
-) {
+    DayModel dayModel,
+    CalendarTheme theme,
+    ValueChanged<DateTime> onTap,
+    ) {
   TextStyle combinedTextStyle = theme.defaultTextStyle;
 
   if (dayModel.isToday) {
@@ -90,20 +90,35 @@ class DayNamesRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var finalWeekDays = (weekDays ??
-            defaultWeekDays(
-                lengthOfDateNames: lengthOfDateName,
-                locale: Localizations.localeOf(context).languageCode))
-        .shiftBy(firstDayOfWeek);
+    // var finalWeekDays = (weekDays ??
+    //         defaultWeekDays(
+    //             lengthOfDateNames: lengthOfDateName,
+    //             locale: Localizations.localeOf(context).languageCode))
+    //     .shiftBy(firstDayOfWeek);
+
+    var locale = Localizations.localeOf(context).languageCode;
+    List<String> finalWeekDays;
+
+    if (locale == 'ko') {
+      finalWeekDays = ['월', '화', '수', '목', '금', '토', '일'];
+    } else {
+      finalWeekDays = (weekDays ??
+          defaultWeekDays(
+              lengthOfDateNames: lengthOfDateName, locale: locale))
+          .shiftBy(firstDayOfWeek);
+    }
 
     return Row(
       children: [
         for (var day in finalWeekDays)
           Expanded(
-            child: Center(
-              child: Text(
-                day,
-                style: textStyle,
+            child: SizedBox(
+              height: 20.0, // <-- 이 부분을 추가하여 높이를 20으로 고정
+              child: Center(
+                child: Text(
+                  day,
+                  style: textStyle,
+                ),
               ),
             ),
           ),
@@ -154,9 +169,9 @@ class DateRangePickerWidget extends StatefulWidget {
     this.firstDayOfWeek = 0,
     this.lengthOfDateName = 3,
   })  : assert(
-          firstDayOfWeek >= 0 && firstDayOfWeek <= 6,
-          'firstDayOfWeek must be in the range [0..6].',
-        ),
+  firstDayOfWeek >= 0 && firstDayOfWeek <= 6,
+  'firstDayOfWeek must be in the range [0..6].',
+  ),
         super(key: key);
 
   /// Called whenever the selected date range is changed.
@@ -409,7 +424,7 @@ class EnrichedMonthWrapWidget extends StatelessWidget {
 
   /// A placeholder widget to use for days that do not exist in the current month.
   SizedBox buildPlaceholder() => SizedBox(
-        width: theme.tileSize,
-        height: theme.tileSize,
-      );
+    width: theme.tileSize,
+    height: theme.tileSize,
+  );
 }

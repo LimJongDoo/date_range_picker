@@ -34,6 +34,10 @@ class MonthSelectorAndDoubleIndicator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final locale = Localizations.localeOf(context).languageCode;
+    final dateFormat =
+    locale == 'ko' ? DateFormat('yyyy년 MM월') : DateFormat.yMMM();
+
     return Row(
       children: [
         IconButton(
@@ -43,7 +47,8 @@ class MonthSelectorAndDoubleIndicator extends StatelessWidget {
         ),
         Expanded(
           child: Text(
-            DateFormat.yMMM().format(currentMonth),
+            dateFormat.format(currentMonth),
+            // DateFormat.yMMM().format(currentMonth),
             textAlign: TextAlign.center,
             style: style,
           ),
@@ -52,7 +57,8 @@ class MonthSelectorAndDoubleIndicator extends StatelessWidget {
           const SizedBox(width: 16),
           Expanded(
             child: Text(
-              DateFormat.yMMM().format(nextMonth!),
+              dateFormat.format(nextMonth!),
+              // DateFormat.yMMM().format(nextMonth!),
               textAlign: TextAlign.center,
               style: style,
             ),
